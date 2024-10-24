@@ -32,20 +32,24 @@ public class PlayerController : MonoBehaviour {
         Debug.Log(rb.velocity);
         Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + " Vertical: " + Input.GetAxis("Vertical"));
 
-        Vector2 horizontalMovement = new Vector2(
-            gameObject.transform.position.x + (Input.GetAxis("Horizontal") * Time.deltaTime * speed), 
-            gameObject.transform.position.y
-        );
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
-        gameObject.transform.position = horizontalMovement; 
+        //Vector2 horizontalMovement = new Vector2(
+        //    gameObject.transform.position.x + (Input.GetAxis("Horizontal") * Time.deltaTime * speed), 
+        //    gameObject.transform.position.y
+        //    rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
+        //);
+
+        //gameObject.transform.position = horizontalMovement; 
     
         if(Input.GetButtonDown("Vertical") && isGrounded()) {
             //newVelocity.y += jumpHeight;
-            rb.AddForce(new Vector2(0, jumpHeight * speed));
+            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
         }
 
         if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
         if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
+
 
         // if(Input.GetKey(KeyCode.A)) {
         //     newVelocity.x -= 1;
