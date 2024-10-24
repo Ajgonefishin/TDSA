@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 
         gameObject.transform.position = horizontalMovement; 
     
-        if(Input.GetAxis("Vertical") > 0 && isGrounded()) {
+        if(Input.GetButtonDown("Vertical") && isGrounded()) {
             //newVelocity.y += jumpHeight;
             rb.AddForce(new Vector2(0, jumpHeight * speed));
         }
