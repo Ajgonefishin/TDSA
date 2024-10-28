@@ -5,22 +5,29 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
-    public int jumpHeight;
+    public float jumpHeight;
     public Vector2 boxSize;
     public float castDistance;
     public LayerMask groundLayer;
 
     bool grounded;
+
+    Animator animator;
     
 
     // Start is called before the first frame update
     void Start() {
-        
+        animator = GetComponent<Animator>();   
+
     }
 
     // Update is called once per frame
     void Update() {
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        //set isJumping to true if you're not grounded and vice versa, this handles animation
+        animator.SetBool("isJumping", !isGrounded());
 
+        animator.SetFloat("yVelocity", rb.velocity.y);
     }
 
     // Update is called a fixed amount per second
@@ -34,17 +41,21 @@ public class PlayerController : MonoBehaviour {
 
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
+        animator.SetFloat("xVelocity", Math.Abs(rb.velocity.x));
+
         //Vector2 horizontalMovement = new Vector2(
         //    gameObject.transform.position.x + (Input.GetAxis("Horizontal") * Time.deltaTime * speed), 
         //    gameObject.transform.position.y
-        //    rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
         //);
 
         //gameObject.transform.position = horizontalMovement; 
-    
-        if(Input.GetButtonDown("Vertical") && isGrounded()) {
+
+
+        //JUMP
+        if (Input.GetButtonDown("Vertical") && isGrounded()) {
             //newVelocity.y += jumpHeight;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+            animator.SetFloat("yVelocity", rb.velocity.y);
         }
 
         if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
@@ -90,6 +101,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+        animator.SetBool("isJumping", !grounded);
+        //animator.SetBool("isJumping", !grounded);
         // Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         // if (collision.gameObject.name == "Grid") {
         //     rb.velocity = new Vector2(0,0);
