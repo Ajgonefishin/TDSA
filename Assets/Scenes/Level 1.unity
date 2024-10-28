@@ -3117,7 +3117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpHeight: 12.5
-  boxSize: {x: 0.57, y: 0.1}
+  boxSize: {x: 0.27, y: 0.1}
   castDistance: 0.47
   groundLayer:
     serializedVersion: 2
