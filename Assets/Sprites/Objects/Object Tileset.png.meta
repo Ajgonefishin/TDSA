@@ -323,8 +323,8 @@ TextureImporter:
       name: Object Tileset_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 504
+        x: 504
+        y: 576
         width: 72
         height: 72
       alignment: 0
@@ -344,7 +344,7 @@ TextureImporter:
       name: Object Tileset_11
       rect:
         serializedVersion: 2
-        x: 72
+        x: 0
         y: 504
         width: 72
         height: 72
@@ -365,7 +365,7 @@ TextureImporter:
       name: Object Tileset_12
       rect:
         serializedVersion: 2
-        x: 144
+        x: 72
         y: 504
         width: 72
         height: 72
@@ -386,7 +386,7 @@ TextureImporter:
       name: Object Tileset_13
       rect:
         serializedVersion: 2
-        x: 216
+        x: 144
         y: 504
         width: 72
         height: 72
@@ -407,7 +407,7 @@ TextureImporter:
       name: Object Tileset_14
       rect:
         serializedVersion: 2
-        x: 288
+        x: 216
         y: 504
         width: 72
         height: 72
@@ -428,7 +428,7 @@ TextureImporter:
       name: Object Tileset_15
       rect:
         serializedVersion: 2
-        x: 360
+        x: 288
         y: 504
         width: 72
         height: 72
@@ -449,8 +449,8 @@ TextureImporter:
       name: Object Tileset_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 432
+        x: 360
+        y: 504
         width: 72
         height: 72
       alignment: 0
@@ -470,7 +470,7 @@ TextureImporter:
       name: Object Tileset_17
       rect:
         serializedVersion: 2
-        x: 72
+        x: 0
         y: 432
         width: 72
         height: 72
@@ -491,8 +491,8 @@ TextureImporter:
       name: Object Tileset_18
       rect:
         serializedVersion: 2
-        x: 0
-        y: 360
+        x: 72
+        y: 432
         width: 72
         height: 72
       alignment: 0
@@ -512,7 +512,7 @@ TextureImporter:
       name: Object Tileset_19
       rect:
         serializedVersion: 2
-        x: 72
+        x: 0
         y: 360
         width: 72
         height: 72
@@ -525,6 +525,27 @@ TextureImporter:
       bones: []
       spriteID: c9e6cb198b8e1be4f9d4b1a61ae0c0c9
       internalID: 1624905022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Object Tileset_20
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 360
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74bf196a0f69d3f4585d0edfc40f103b
+      internalID: 719675566
       vertices: []
       indices: 
       edges: []
@@ -553,6 +574,7 @@ TextureImporter:
       Object Tileset_18: -1701215263
       Object Tileset_19: 1624905022
       Object Tileset_2: 1166054517
+      Object Tileset_20: 719675566
       Object Tileset_3: -1534750103
       Object Tileset_4: 432314107
       Object Tileset_5: 124094563
