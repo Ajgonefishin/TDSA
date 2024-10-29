@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour {
     public Vector2 boxSize;
     public float castDistance;
     public LayerMask groundLayer;
+    public GameObject currentCheckpoint;
 
     bool grounded;
-
     Animator animator;
     
 
@@ -36,61 +36,36 @@ public class PlayerController : MonoBehaviour {
         SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
 
-        Debug.Log(rb.velocity);
+        Debug.Log("is grounded: " + isGrounded());
         Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + " Vertical: " + Input.GetAxis("Vertical"));
 
+        // set vertical velocity (horizontal movement)
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
-
         animator.SetFloat("xVelocity", Math.Abs(rb.velocity.x));
 
-        //Vector2 horizontalMovement = new Vector2(
-        //    gameObject.transform.position.x + (Input.GetAxis("Horizontal") * Time.deltaTime * speed), 
-        //    gameObject.transform.position.y
-        //);
-
-        //gameObject.transform.position = horizontalMovement; 
-
-
         //JUMP
-        if (Input.GetButtonDown("Vertical") && isGrounded()) {
+        if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
+        //if (Input.GetButtonDown("Vertical") && isGrounded()) {
             //newVelocity.y += jumpHeight;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             animator.SetFloat("yVelocity", rb.velocity.y);
         }
 
+        // check if died
+        if (gameObject.transform.position.y < -6) {
+            killPlayer();
+        }
+
+        // flip sprite if necessary
         if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
         if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
-
-
-        // if(Input.GetKey(KeyCode.A)) {
-        //     newVelocity.x -= 1;
-        //     rb.velocity = new Vector2(newVelocity.x * speed, rb.velocity.y);
-        //     if (!renderer.flipX) {
-        //         renderer.flipX = true; 
-        //     }
-        // }
-
-        // if(Input.GetKey(KeyCode.D)) {
-        //     newVelocity.x += 1;
-        //     rb.velocity = new Vector2(newVelocity.x * speed, rb.velocity.y);
-        //     if (renderer.flipX) {
-        //         renderer.flipX = false; 
-        //     }
-        // }  
-
-        //gameObject.transform.position += newPos * speed;
-        //rb.AddForce(newPos*speed);
-        //rb.velocity = rb.velocity + (newVelocity * speed);
     }   
 
-    public bool isGrounded()
-    {
-        if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer))
-        {
+    public bool isGrounded() {
+        if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer)) {
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -107,6 +82,12 @@ public class PlayerController : MonoBehaviour {
         // if (collision.gameObject.name == "Grid") {
         //     rb.velocity = new Vector2(0,0);
         // }
+    }
+
+    void killPlayer() {
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector2();
+        gameObject.transform.position = currentCheckpoint.transform.position;
     }
 
     // private void OnCollisionEnter2D(Collision2D other)
