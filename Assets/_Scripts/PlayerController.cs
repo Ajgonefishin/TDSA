@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,10 +7,19 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
     public float jumpHeight;
+    public float bottomDeathBox;
     public Vector2 boxSize;
     public float castDistance;
     public LayerMask groundLayer;
     public GameObject currentCheckpoint;
+
+    public float dashVelocity;
+    public float dashTime; // in seconds
+    private Vector2 dashDirection;
+    public bool dashUnlock = false;
+    private bool isDashing;
+    private bool canDash;
+    private TrailRenderer tr;
 
     bool grounded;
     Animator animator;
@@ -17,7 +27,8 @@ public class PlayerController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        animator = GetComponent<Animator>();   
+        animator = GetComponent<Animator>();
+        tr = GetComponent<TrailRenderer>();
 
     }
 
@@ -28,6 +39,34 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isJumping", !isGrounded());
 
         animator.SetFloat("yVelocity", rb.velocity.y);
+
+        //DASH
+
+        if ((Input.GetAxis("Dash") > 0) && dashUnlock && canDash)
+        {
+            isDashing = true;
+            canDash = false;
+            //tr.emitting = true; // enable dash trail
+
+            //dashDirection = new Vector2(Input.GetAxis("Horizontal"), rb.velocity.y);
+            //dashDirection = new Vector2(x:Input.GetAxisRaw("Horizontal"), y:Input.GetAxisRaw("Vertical"));
+            dashDirection = new Vector2(1f, 5f);
+            //dashDirection = new Vector2(transform.localScale.x, y:0);
+            //dashDirection = new Vector2();
+            StartCoroutine(stopDash());
+        }
+
+        if(isDashing)
+        {
+            //rb.velocity = dashDirection.normalized * dashVelocity;
+            rb.velocity = dashDirection.normalized * dashVelocity;
+            return; //important idk why
+        }
+
+        if (isGrounded())
+        {
+            canDash = true;
+        }
     }
 
     // Update is called a fixed amount per second
@@ -52,7 +91,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         // check if died
-        if (gameObject.transform.position.y < -6) {
+        if (gameObject.transform.position.y < bottomDeathBox) {
             killPlayer();
         }
 
@@ -60,6 +99,16 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
         if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
     }   
+
+
+    private IEnumerator stopDash()
+    {
+        yield return new WaitForSeconds(dashTime);
+        //disable trail
+        //tr.emitting = false;
+        isDashing = false;
+    }
+
 
     public bool isGrounded() {
         if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer)) {
