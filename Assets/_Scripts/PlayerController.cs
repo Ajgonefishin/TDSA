@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
 
     // variables for dash
     private bool isDashing;
-    private bool canDash = true;
+    public bool canDash = true;
     public float dashVelocity;
     public float dashTime; // in seconds
     public float dashCooldown; // in seconds
@@ -55,6 +55,11 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonDown("Fire3") && canDash && dashUnlocked) {
             tr.emitting = true; // enable dash trail
             StartCoroutine(Dash());
+        }
+
+        if (isGrounded() && !isDashing)
+        {
+            canDash = true;
         }
     }
 
@@ -104,10 +109,11 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isJumping", !grounded);
     }
 
-    void killPlayer() {
+    public void killPlayer() {
         rb.velocity = new Vector2();
         gameObject.transform.position = currentCheckpoint.transform.position;
     }
+
 
     // coroutine for dashing. based on https://www.youtube.com/watch?v=2kFGmuPHiA0 with changes
     private IEnumerator Dash() {
@@ -133,7 +139,6 @@ public class PlayerController : MonoBehaviour {
         // wait until dashCooldown has elapsed until we can dash again
         yield return new WaitForSeconds(dashCooldown);
         tr.emitting = false; // disable dash trail
-        canDash = true;
     }
 
 }
