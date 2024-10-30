@@ -3147,7 +3147,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0013240948, y: -0.01922524}
+  m_Offset: {x: -0.0013240874, y: -0.034652233}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3158,7 +3158,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.36565894, y: 0.6415734}
+  m_Size: {x: 0.36565894, y: 0.6211059}
   m_EdgeRadius: 0
 --- !u!50 &1194500672
 Rigidbody2D:
@@ -3203,11 +3203,14 @@ MonoBehaviour:
   jumpHeight: 12.5
   bottomDeathBox: -12
   boxSize: {x: 0.27, y: 0.1}
-  castDistance: 0.47
+  castDistance: 0.55
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   currentCheckpoint: {fileID: 0}
+  dashDistance: 18
+  dashTime: 0.3
+  dashUnlock: 0
 --- !u!212 &1194500674
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3269,7 +3272,7 @@ Transform:
   m_GameObject: {fileID: 1194500670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.03, y: -0.56, z: 0}
+  m_LocalPosition: {x: 21.026, y: -0.438, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:

@@ -13,11 +13,12 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayer;
     public GameObject currentCheckpoint;
 
-    public float dashVelocity;
+    public float dashDistance;
     public float dashTime; // in seconds
-    private Vector2 dashDirection;
+    //private Vector2 dashDirection;
+    private float dashDirection = 1f;
     public bool dashUnlock = false;
-    private bool isDashing;
+    private bool isDashing = false;
     private bool canDash;
     private TrailRenderer tr;
 
@@ -37,36 +38,45 @@ public class PlayerController : MonoBehaviour {
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         //set isJumping to true if you're not grounded and vice versa, this handles animation
         animator.SetBool("isJumping", !isGrounded());
+        //and same for dash
+        animator.SetBool("isDashingAni", isDashing);
 
         animator.SetFloat("yVelocity", rb.velocity.y);
 
-        //DASH
+        //DASH 
 
-        if ((Input.GetAxis("Dash") > 0) && dashUnlock && canDash)
+        if ((Input.GetAxis("Dash") > 0) && dashUnlock && canDash && !isDashing)
         {
             isDashing = true;
             canDash = false;
+            StartCoroutine(Dash(dashDirection));
             //tr.emitting = true; // enable dash trail
-
-            //dashDirection = new Vector2(Input.GetAxis("Horizontal"), rb.velocity.y);
-            //dashDirection = new Vector2(x:Input.GetAxisRaw("Horizontal"), y:Input.GetAxisRaw("Vertical"));
-            dashDirection = new Vector2(1f, 5f);
-            //dashDirection = new Vector2(transform.localScale.x, y:0);
-            //dashDirection = new Vector2();
-            StartCoroutine(stopDash());
         }
 
-        if(isDashing)
-        {
-            //rb.velocity = dashDirection.normalized * dashVelocity;
-            rb.velocity = dashDirection.normalized * dashVelocity;
-            return; //important idk why
-        }
 
-        if (isGrounded())
+
+            ////DASH beta
+
+            //    //dashDirection = new Vector2(Input.GetAxis("Horizontal"), rb.velocity.y);
+            //    //dashDirection = new Vector2(x:Input.GetAxisRaw("Horizontal"), y:Input.GetAxisRaw("Vertical"));
+            //    dashDirection = new Vector2(1f, 5f);
+            //    //dashDirection = new Vector2(transform.localScale.x, y:0);
+            //    //dashDirection = new Vector2();
+            //    StartCoroutine(stopDash());
+            //}
+
+            //if(isDashing)
+            //{
+            //    //rb.velocity = dashDirection.normalized * dashVelocity;
+            //    rb.velocity = dashDirection.normalized * dashVelocity;
+            //    return; //important idk why
+            //}
+
+            if (isGrounded())
         {
             canDash = true;
         }
+
     }
 
     // Update is called a fixed amount per second
@@ -79,11 +89,14 @@ public class PlayerController : MonoBehaviour {
         Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + " Vertical: " + Input.GetAxis("Vertical"));
 
         // set vertical velocity (horizontal movement)
+        if (!isDashing) 
+        { 
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
         animator.SetFloat("xVelocity", Math.Abs(rb.velocity.x));
+        }
 
         //JUMP
-        if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
+        if (Input.GetAxis("Vertical") > 0 && isGrounded() && !isDashing) {
         //if (Input.GetButtonDown("Vertical") && isGrounded()) {
             //newVelocity.y += jumpHeight;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
@@ -96,18 +109,26 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
-        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
+        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX)
+        {
+            renderer.flipX = false;
+            dashDirection = 1f;
+        }
+        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX)
+        {
+            renderer.flipX = true;
+            dashDirection = -1f;
+        }
     }   
 
 
-    private IEnumerator stopDash()
-    {
-        yield return new WaitForSeconds(dashTime);
-        //disable trail
-        //tr.emitting = false;
-        isDashing = false;
-    }
+    //private IEnumerator stopDash()
+    //{
+    //    yield return new WaitForSeconds(dashTime);
+    //    //disable trail
+    //    //tr.emitting = false;
+    //    isDashing = false;
+    //}
 
 
     public bool isGrounded() {
@@ -117,6 +138,24 @@ public class PlayerController : MonoBehaviour {
         else {
             return false;
         }
+    }
+
+    IEnumerator Dash(float direction)
+    {
+        
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        isDashing = true;
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        //rb.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
+        float gravity = rb.gravityScale;
+        rb.gravityScale = 0;
+        rb.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
+        yield return new WaitForSeconds(dashTime);
+        // alright dash is over wrap it up 
+        //disable trail
+        //tr.emitting = false;
+        isDashing = false;
+        rb.gravityScale = gravity;
     }
 
     private void OnDrawGizmos()
