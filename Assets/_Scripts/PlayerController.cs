@@ -32,13 +32,15 @@ public class PlayerController : MonoBehaviour {
     Animator animator;
     Rigidbody2D rb;
     SpriteRenderer renderer;
-    
+    private TrailRenderer tr;
+
     // Start is called before the first frame update
     void Start() {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
+        tr = GetComponent<TrailRenderer>();
     }
 
     // Update is called once per frame
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour {
 
         //DASH
         if (Input.GetButtonDown("Fire3") && canDash && dashUnlocked) {
+            tr.emitting = true; // enable dash trail
             StartCoroutine(Dash());
         }
     }
@@ -129,6 +132,7 @@ public class PlayerController : MonoBehaviour {
         isDashing = false;
         // wait until dashCooldown has elapsed until we can dash again
         yield return new WaitForSeconds(dashCooldown);
+        tr.emitting = false; // disable dash trail
         canDash = true;
     }
 
