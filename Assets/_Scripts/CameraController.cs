@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public GameObject player;
+    public float minCameraY;
 
     // Start is called before the first frame update
     void Start() {
@@ -15,7 +16,7 @@ public class CameraController : MonoBehaviour {
     void Update() {
         // get correct y-value (we don't want to go below 0; if we fall past the camera, we have the player die)
         float cameraY = player.transform.position.y;
-        if (cameraY < 0) cameraY = 0;
+        if (cameraY < minCameraY) cameraY = minCameraY;
         // update camera position
         gameObject.transform.position = new Vector3(
             player.transform.position.x, 
