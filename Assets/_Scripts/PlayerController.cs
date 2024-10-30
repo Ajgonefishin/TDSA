@@ -1,104 +1,75 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    // variables for standard movement
     public float speed;
     public float jumpHeight;
-    public float bottomDeathBox;
+
+    // variables to check if grounded
     public Vector2 boxSize;
     public float castDistance;
     public LayerMask groundLayer;
+    bool grounded;
+    
+    // variables for death and checkpoints
+    public float bottomDeathBox;
     public GameObject currentCheckpoint;
 
-    public float dashDistance;
+    // variables for dash
+    private bool isDashing;
+    private bool canDash = true;
+    public float dashVelocity;
     public float dashTime; // in seconds
-    //private Vector2 dashDirection;
-    private float dashDirection = 1f;
-    public bool dashUnlock = false;
-    private bool isDashing = false;
-    private bool canDash;
-    private TrailRenderer tr;
+    public float dashCooldown; // in seconds
+    public bool dashUnlocked;
 
-    bool grounded;
+    // gameObject components to be used across methods
     Animator animator;
+    Rigidbody2D rb;
+    SpriteRenderer renderer;
     
-
     // Start is called before the first frame update
     void Start() {
+        // initialize components
         animator = GetComponent<Animator>();
-        tr = GetComponent<TrailRenderer>();
-
+        rb = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update() {
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        if (isDashing) return;
+
         //set isJumping to true if you're not grounded and vice versa, this handles animation
         animator.SetBool("isJumping", !isGrounded());
-        //and same for dash
-        animator.SetBool("isDashingAni", isDashing);
-
         animator.SetFloat("yVelocity", rb.velocity.y);
 
-        //DASH 
-
-        if ((Input.GetAxis("Dash") > 0) && dashUnlock && canDash && !isDashing)
-        {
-            isDashing = true;
-            canDash = false;
-            StartCoroutine(Dash(dashDirection));
-            //tr.emitting = true; // enable dash trail
+        //DASH
+        if (Input.GetButtonDown("Fire3") && canDash && dashUnlocked) {
+            StartCoroutine(Dash());
         }
-
-
-
-            ////DASH beta
-
-            //    //dashDirection = new Vector2(Input.GetAxis("Horizontal"), rb.velocity.y);
-            //    //dashDirection = new Vector2(x:Input.GetAxisRaw("Horizontal"), y:Input.GetAxisRaw("Vertical"));
-            //    dashDirection = new Vector2(1f, 5f);
-            //    //dashDirection = new Vector2(transform.localScale.x, y:0);
-            //    //dashDirection = new Vector2();
-            //    StartCoroutine(stopDash());
-            //}
-
-            //if(isDashing)
-            //{
-            //    //rb.velocity = dashDirection.normalized * dashVelocity;
-            //    rb.velocity = dashDirection.normalized * dashVelocity;
-            //    return; //important idk why
-            //}
-
-            if (isGrounded())
-        {
-            canDash = true;
-        }
-
     }
 
     // Update is called a fixed amount per second
     void FixedUpdate() {
-        Vector2 newVelocity = new Vector2(0, 0);
-        SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        if (isDashing) return;
 
         Debug.Log("is grounded: " + isGrounded());
         Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + " Vertical: " + Input.GetAxis("Vertical"));
+        Debug.Log("transform.whatever : " + transform.localScale.x);
 
         // set vertical velocity (horizontal movement)
-        if (!isDashing) 
-        { 
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
         animator.SetFloat("xVelocity", Math.Abs(rb.velocity.x));
-        }
 
         //JUMP
-        if (Input.GetAxis("Vertical") > 0 && isGrounded() && !isDashing) {
+        if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
         //if (Input.GetButtonDown("Vertical") && isGrounded()) {
-            //newVelocity.y += jumpHeight;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             animator.SetFloat("yVelocity", rb.velocity.y);
         }
@@ -109,27 +80,9 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX)
-        {
-            renderer.flipX = false;
-            dashDirection = 1f;
-        }
-        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX)
-        {
-            renderer.flipX = true;
-            dashDirection = -1f;
-        }
+        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
+        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
     }   
-
-
-    //private IEnumerator stopDash()
-    //{
-    //    yield return new WaitForSeconds(dashTime);
-    //    //disable trail
-    //    //tr.emitting = false;
-    //    isDashing = false;
-    //}
-
 
     public bool isGrounded() {
         if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer)) {
@@ -140,62 +93,43 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    IEnumerator Dash(float direction)
-    {
-        
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-        isDashing = true;
-        rb.velocity = new Vector2(rb.velocity.x, 0f);
-        //rb.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
-        float gravity = rb.gravityScale;
-        rb.gravityScale = 0;
-        rb.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
-        yield return new WaitForSeconds(dashTime);
-        // alright dash is over wrap it up 
-        //disable trail
-        //tr.emitting = false;
-        isDashing = false;
-        rb.gravityScale = gravity;
-    }
-
-    private void OnDrawGizmos()
-    {
+    private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         animator.SetBool("isJumping", !grounded);
-        //animator.SetBool("isJumping", !grounded);
-        // Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-        // if (collision.gameObject.name == "Grid") {
-        //     rb.velocity = new Vector2(0,0);
-        // }
     }
 
     void killPlayer() {
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         rb.velocity = new Vector2();
         gameObject.transform.position = currentCheckpoint.transform.position;
     }
 
-    // private void OnCollisionEnter2D(Collision2D other)
-    // {
-    //    if (other.gameObject.CompareTag("Ground"))
-    //    {
-    //        Vector3 normal = other.GetContact(0).normal;
-    //        if (normal == Vector3.up)
-    //        {
-    //            grounded = true;
-    //        }
-    //    }
-    // }
-
-    //private void OnCollisionExit2D(Collision2D other)
-    //{
-    //    if (other.gameObject.CompareTag("Ground"))
-    //    {
-    //        grounded = false;
-    //    }
-    //}
+    // coroutine for dashing. based on https://www.youtube.com/watch?v=2kFGmuPHiA0 with changes
+    private IEnumerator Dash() {
+        canDash = false;
+        isDashing = true;
+        // disable gravity temporarily while the dash is active
+        float gravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        // if flipX is true, we're pointing left; if flipX is false, we're pointing right
+        float direction = 0;
+        if (renderer.flipX) {
+            direction = -1;
+        } else {
+            direction = 1;
+        }
+        // set velocity 
+        rb.velocity = new Vector2(direction * dashVelocity, 0);
+        // wait in this state until dashTime has elapsed
+        yield return new WaitForSeconds(dashTime);
+        // return to normal pre-dash state
+        rb.gravityScale = gravity;
+        isDashing = false;
+        // wait until dashCooldown has elapsed until we can dash again
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
 
 }
