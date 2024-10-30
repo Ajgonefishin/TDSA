@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ec7620fb233b4b24ca3b6ba8c51cb327
+guid: 561a8aa227ce4494bbf9e2db082710eb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dash Leaf Spin_0
+      name: Mint Leaf Particle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,92 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0bde1481f4c70a24daef1befcd0c64d7
-      internalID: -1814167334
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dash Leaf Spin_1
-      rect:
-        serializedVersion: 2
-        x: 72
-        y: 0
-        width: 72
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 459948d002aff504099381fc2196a40b
-      internalID: -620258138
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dash Leaf Spin_2
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 72
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fee72c41974ba644e92250e067c34c65
-      internalID: -542643862
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dash Leaf Spin_3
-      rect:
-        serializedVersion: 2
-        x: 216
-        y: 0
-        width: 72
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0da3587ce959854428029edc43d4bc0d
-      internalID: 2069464976
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dash Leaf Spin_4
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 0
-        width: 72
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3a6bda649f83bb4428ac8afc572a85e1
-      internalID: -718320607
+      spriteID: 12e9902c73394f545806df574c5fe2af
+      internalID: 764811951
       vertices: []
       indices: 
       edges: []
@@ -225,11 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dash Leaf Spin_0: -1814167334
-      Dash Leaf Spin_1: -620258138
-      Dash Leaf Spin_2: -542643862
-      Dash Leaf Spin_3: 2069464976
-      Dash Leaf Spin_4: -718320607
+      Mint Leaf Particle_0: 764811951
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
