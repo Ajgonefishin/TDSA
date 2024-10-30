@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
     // gameObject components to be used across methods
     Animator animator;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     SpriteRenderer renderer;
     private TrailRenderer tr;
 

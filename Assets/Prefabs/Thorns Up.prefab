@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 3614259380825770090}
   - component: {fileID: 3210596442860443406}
   m_Layer: 7
-  m_Name: Thorns
+  m_Name: Thorns Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,7 +245,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1668764579, guid: 01c34b2a0ff660e45a46540d70a558e0, type: 3}
+  m_Sprite: {fileID: -1927328771, guid: 01c34b2a0ff660e45a46540d70a558e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -288,7 +288,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3609572}
+  m_Offset: {x: 0, y: 0.3609572}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}

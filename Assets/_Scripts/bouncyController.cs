@@ -1,14 +1,13 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class thornsController : MonoBehaviour
+public class bouncyController : MonoBehaviour
 {
     Animator animator;
     Rigidbody2D rb;
-    private TrailRenderer tr;
+    public float bounceHeight;
 
-    public GameObject currentCheckpoint;
     void Start()
     {
         // initialize components
@@ -19,12 +18,9 @@ public class thornsController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController targetableObject = collision.gameObject.GetComponent<PlayerController>();
-
-        if (targetableObject != null)
-        {
-
-            targetableObject.killPlayer();
-        }
+        targetableObject.rb.AddForce(new Vector2(0f, bounceHeight), ForceMode2D.Impulse);
+        // refresh dash
+        targetableObject.canDash = true;
 
     }
 }
