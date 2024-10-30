@@ -31,14 +31,14 @@ public class PlayerController : MonoBehaviour {
     // gameObject components to be used across methods
     Animator animator;
     Rigidbody2D rb;
-    SpriteRenderer renderer;
+    SpriteRenderer spriteRenderer;
     
     // Start is called before the first frame update
     void Start() {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -80,8 +80,8 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
-        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
+        if (Input.GetAxis("Horizontal") > 0 && spriteRenderer.flipX) spriteRenderer.flipX = false;
+        if (Input.GetAxis("Horizontal") < 0 && !spriteRenderer.flipX) spriteRenderer.flipX = true;
     }   
 
     public bool isGrounded() {
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour {
         rb.gravityScale = 0f;
         // if flipX is true, we're pointing left; if flipX is false, we're pointing right
         float direction = 0;
-        if (renderer.flipX) {
+        if (spriteRenderer.flipX) {
             direction = -1;
         } else {
             direction = 1;
