@@ -237,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 329162871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: 0.17, z: 0}
+  m_LocalPosition: {x: -0.37, y: -3.83, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3196,6 +3196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1194500670}
   minCameraY: 0
+  maxCameraY: 4
 --- !u!1001 &840219886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3547,6 +3548,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpHeight: 12.5
+  jumpStartTime: 0
+  jumpTime: 0
+  midJump: 0
   boxSize: {x: 0.27, y: 0.1}
   castDistance: 0.55
   groundLayer:

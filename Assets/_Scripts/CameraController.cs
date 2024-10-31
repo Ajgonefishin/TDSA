@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour {
 
     public GameObject player;
     public float minCameraY;
+    public float maxCameraY;
 
     // Start is called before the first frame update
     void Start() {
@@ -17,6 +18,7 @@ public class CameraController : MonoBehaviour {
         // get correct y-value (we don't want to go below 0; if we fall past the camera, we have the player die)
         float cameraY = player.transform.position.y;
         if (cameraY < minCameraY) cameraY = minCameraY;
+        if (cameraY > maxCameraY) cameraY = maxCameraY;
         // update camera position
         gameObject.transform.position = new Vector3(
             player.transform.position.x, 
