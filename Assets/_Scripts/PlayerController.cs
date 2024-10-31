@@ -31,20 +31,22 @@ public class PlayerController : MonoBehaviour {
     // gameObject components to be used across methods
     Animator animator;
     public Rigidbody2D rb;
-    SpriteRenderer renderer;
+    SpriteRenderer spriteRenderer;
     private TrailRenderer tr;
+    AudioSource audioSource;
 
     // sound effects
-    AudioSource dashAudio;
+    public AudioClip dashSound;
+    public AudioClip deathSound;
 
     // Start is called before the first frame update
     void Start() {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
-        dashAudio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
 
         // initialize mint leaf graphics
         if (dashUnlocked)
@@ -125,8 +127,8 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
-        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
+        if (Input.GetAxis("Horizontal") > 0 && spriteRenderer.flipX) spriteRenderer.flipX = false;
+        if (Input.GetAxis("Horizontal") < 0 && !spriteRenderer.flipX) spriteRenderer.flipX = true;
     }   
 
     public bool isGrounded() {
@@ -147,6 +149,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void killPlayer() {
+        audioSource.PlayOneShot(deathSound);
         rb.velocity = new Vector2();
         gameObject.transform.position = currentCheckpoint.transform.position;
     }
@@ -154,7 +157,7 @@ public class PlayerController : MonoBehaviour {
 
     // coroutine for dashing. based on https://www.youtube.com/watch?v=2kFGmuPHiA0 with changes
     private IEnumerator Dash() {
-        dashAudio.Play();
+        audioSource.PlayOneShot(dashSound);
         canDash = false;
         isDashing = true;
         // disable gravity temporarily while the dash is active
@@ -162,7 +165,7 @@ public class PlayerController : MonoBehaviour {
         rb.gravityScale = 0f;
         // if flipX is true, we're pointing left; if flipX is false, we're pointing right
         float direction = 0;
-        if (renderer.flipX) {
+        if (spriteRenderer.flipX) {
             direction = -1;
         } else {
             direction = 1;

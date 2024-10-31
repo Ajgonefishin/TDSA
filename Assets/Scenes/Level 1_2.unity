@@ -3548,9 +3548,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpHeight: 12.5
-  jumpStartTime: 0
-  jumpTime: 0
-  midJump: 0
   boxSize: {x: 0.27, y: 0.1}
   castDistance: 0.55
   groundLayer:
@@ -3563,9 +3560,9 @@ MonoBehaviour:
   dashTime: 0.3
   dashCooldown: 0.1
   dashUnlocked: 0
-  dashSound: {fileID: 1499858252}
-  deathSound: {fileID: 0}
   rb: {fileID: 0}
+  dashSound: {fileID: 8300000, guid: a15d025c3fe36ef468c7075cc4c2411f, type: 3}
+  deathSound: {fileID: 8300000, guid: 6c8c17ccc6646ae4eafe5d8ee0cc3ffb, type: 3}
 --- !u!212 &1194500674
 SpriteRenderer:
   m_ObjectHideFlags: 0
