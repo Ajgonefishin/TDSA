@@ -28,11 +28,16 @@ public class PlayerController : MonoBehaviour {
     public float dashCooldown; // in seconds
     public bool dashUnlocked;
 
+    // audio sources
+    public AudioSource dashSound;
+    public AudioSource deathSound;
+
     // gameObject components to be used across methods
     Animator animator;
     public Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
     private TrailRenderer tr;
+    
 
     // Start is called before the first frame update
     void Start() {
@@ -119,6 +124,7 @@ public class PlayerController : MonoBehaviour {
     private IEnumerator Dash() {
         canDash = false;
         isDashing = true;
+        dashSound.Play();
         // disable gravity temporarily while the dash is active
         float gravity = rb.gravityScale;
         rb.gravityScale = 0f;

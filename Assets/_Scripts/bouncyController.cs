@@ -7,6 +7,7 @@ public class bouncyController : MonoBehaviour
     Animator animator;
     Rigidbody2D rb;
     public float bounceHeight;
+    public AudioSource bounceAudio;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class bouncyController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController targetableObject = collision.gameObject.GetComponent<PlayerController>();
+        bounceAudio.Play();
         targetableObject.rb.AddForce(new Vector2(0f, bounceHeight), ForceMode2D.Impulse);
         // refresh dash
         targetableObject.canDash = true;
