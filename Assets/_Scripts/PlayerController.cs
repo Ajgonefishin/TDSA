@@ -33,18 +33,23 @@ public class PlayerController : MonoBehaviour {
     public float dashCooldown; // in seconds
     public bool dashUnlocked;
 
+    // audio sources
+    public AudioSource dashSound;
+    public AudioSource deathSound;
+
     // gameObject components to be used across methods
     Animator animator;
     public Rigidbody2D rb;
-    SpriteRenderer renderer;
+    SpriteRenderer spriteRenderer;
     private TrailRenderer tr;
+    
 
     // Start is called before the first frame update
     void Start() {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
     }
 
@@ -122,8 +127,8 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
-        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
+        if (Input.GetAxis("Horizontal") > 0 && spriteRenderer.flipX) spriteRenderer.flipX = false;
+        if (Input.GetAxis("Horizontal") < 0 && !spriteRenderer.flipX) spriteRenderer.flipX = true;
     }   
 
     public bool isGrounded() {
@@ -153,12 +158,13 @@ public class PlayerController : MonoBehaviour {
     private IEnumerator Dash() {
         canDash = false;
         isDashing = true;
+        dashSound.Play();
         // disable gravity temporarily while the dash is active
         float gravity = rb.gravityScale;
         rb.gravityScale = 0f;
         // if flipX is true, we're pointing left; if flipX is false, we're pointing right
         float direction = 0;
-        if (renderer.flipX) {
+        if (spriteRenderer.flipX) {
             direction = -1;
         } else {
             direction = 1;
