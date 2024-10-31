@@ -45,6 +45,12 @@ public class PlayerController : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
         dashAudio = GetComponent<AudioSource>();
+
+        // initialize mint leaf graphics
+        if (dashUnlocked)
+        {
+            animator.SetFloat("mintOnFake", 1);
+        }
     }
 
     // Update is called once per frame
