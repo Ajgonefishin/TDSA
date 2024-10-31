@@ -10,6 +10,11 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float jumpHeight;
 
+    // variables for variable jump height
+    public float jumpStartTime;
+    public float jumpTime;
+    public bool midJump;
+
     // variables to check if grounded
     public Vector2 boxSize;
     public float castDistance;
@@ -61,6 +66,11 @@ public class PlayerController : MonoBehaviour {
         {
             canDash = true;
         }
+
+        if (Input.GetAxis("Vertical") < 0 && midJump)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpHeight / 999);
+        }
     }
 
     // Update is called a fixed amount per second
@@ -77,9 +87,33 @@ public class PlayerController : MonoBehaviour {
 
         //JUMP
         if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
-        //if (Input.GetButtonDown("Vertical") && isGrounded()) {
+            //if (Input.GetButtonDown("Vertical") && isGrounded()) {
+            jumpTime = jumpStartTime;
+            midJump = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             animator.SetFloat("yVelocity", rb.velocity.y);
+
+        ////jump pressure test
+        //if (Input.GetAxis("Vertical") > 0 && midJump)
+        //    {
+        //        if (jumpTime > 0) {
+        //            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+        //            jumpTime -= Time.deltaTime;
+
+        //        }
+        //        else
+        //        {
+        //            midJump = false;
+
+        //        }
+
+        //    }
+
+        //if (Input.GetAxis("Vertical") < 0)
+        //    {
+        //        midJump = false;
+        //    }
+
         }
 
         // check if died

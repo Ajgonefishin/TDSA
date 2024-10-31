@@ -28,10 +28,10 @@ public class mintController : MonoBehaviour
 
             //disable mint leaf for mintCooldown amount of seconds
             StartCoroutine(mintLogic());
-
         }
         else {
             mintOn = false;
+
             animator.SetFloat("mintOnFake", 0);
         }
 
