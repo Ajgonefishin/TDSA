@@ -10,11 +10,6 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float jumpHeight;
 
-    // variables for variable jump height
-    public float jumpStartTime;
-    public float jumpTime;
-    public bool midJump;
-
     // variables to check if grounded
     public Vector2 boxSize;
     public float castDistance;
@@ -33,24 +28,23 @@ public class PlayerController : MonoBehaviour {
     public float dashCooldown; // in seconds
     public bool dashUnlocked;
 
-    // audio sources
-    public AudioSource dashSound;
-    public AudioSource deathSound;
-
     // gameObject components to be used across methods
     Animator animator;
     public Rigidbody2D rb;
-    SpriteRenderer spriteRenderer;
+    SpriteRenderer renderer;
     private TrailRenderer tr;
-    
+
+    // sound effects
+    AudioSource dashAudio;
 
     // Start is called before the first frame update
     void Start() {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
+        dashAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -72,10 +66,10 @@ public class PlayerController : MonoBehaviour {
             canDash = true;
         }
 
-        if (Input.GetAxis("Vertical") < 0 && midJump)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpHeight / 999);
-        }
+        //if (Input.GetAxis("Vertical") < 0 && midJump)
+        //{
+        //    rb.velocity = new Vector2(rb.velocity.x, jumpHeight / );
+        //}
     }
 
     // Update is called a fixed amount per second
@@ -93,8 +87,6 @@ public class PlayerController : MonoBehaviour {
         //JUMP
         if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
             //if (Input.GetButtonDown("Vertical") && isGrounded()) {
-            jumpTime = jumpStartTime;
-            midJump = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             animator.SetFloat("yVelocity", rb.velocity.y);
 
@@ -127,8 +119,8 @@ public class PlayerController : MonoBehaviour {
         }
 
         // flip sprite if necessary
-        if (Input.GetAxis("Horizontal") > 0 && spriteRenderer.flipX) spriteRenderer.flipX = false;
-        if (Input.GetAxis("Horizontal") < 0 && !spriteRenderer.flipX) spriteRenderer.flipX = true;
+        if (Input.GetAxis("Horizontal") > 0 && renderer.flipX) renderer.flipX = false;
+        if (Input.GetAxis("Horizontal") < 0 && !renderer.flipX) renderer.flipX = true;
     }   
 
     public bool isGrounded() {
@@ -156,15 +148,15 @@ public class PlayerController : MonoBehaviour {
 
     // coroutine for dashing. based on https://www.youtube.com/watch?v=2kFGmuPHiA0 with changes
     private IEnumerator Dash() {
+        dashAudio.Play();
         canDash = false;
         isDashing = true;
-        dashSound.Play();
         // disable gravity temporarily while the dash is active
         float gravity = rb.gravityScale;
         rb.gravityScale = 0f;
         // if flipX is true, we're pointing left; if flipX is false, we're pointing right
         float direction = 0;
-        if (spriteRenderer.flipX) {
+        if (renderer.flipX) {
             direction = -1;
         } else {
             direction = 1;
