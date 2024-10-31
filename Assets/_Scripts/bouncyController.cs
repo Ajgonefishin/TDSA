@@ -7,13 +7,14 @@ public class bouncyController : MonoBehaviour
     Animator animator;
     Rigidbody2D rb;
     public float bounceHeight;
-    public AudioSource bounceAudio;
+    AudioSource bounceAudio;
 
     void Start()
     {
         // initialize components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        bounceAudio = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
