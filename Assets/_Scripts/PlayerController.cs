@@ -163,7 +163,6 @@ public class PlayerController : MonoBehaviour {
         if (gameObject.transform.position.y > bottomDeathBox)
         {
             yield return new WaitForSeconds(0.7f);
-            rb.velocity = new Vector2(0, 0);
         }
         animator.SetBool("Death", false);
         //rb.gravityScale = gravity;
