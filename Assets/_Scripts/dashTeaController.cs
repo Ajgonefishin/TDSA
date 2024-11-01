@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class dashTeaController : MonoBehaviour {
 
+    AudioSource audioSource;
+
+    // sound effects
+    public AudioClip collect;
+
+
     // Start is called before the first frame update
     void Start() {
         
@@ -18,6 +24,7 @@ public class dashTeaController : MonoBehaviour {
         PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
         // unlock dash for the player who collides with this
         playerController.dashUnlocked = true;
+        audioSource.PlayOneShot(collect);
         Destroy(this.gameObject);
     }
 }
