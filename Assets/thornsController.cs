@@ -5,7 +5,7 @@ using UnityEngine;
 public class thornsController : MonoBehaviour
 {
     Animator animator;
-    Rigidbody2D rb;
+    //Rigidbody2D rb;
     private TrailRenderer tr;
 
     public GameObject currentCheckpoint;
@@ -13,7 +13,7 @@ public class thornsController : MonoBehaviour
     {
         // initialize components
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,7 +23,7 @@ public class thornsController : MonoBehaviour
         if (targetableObject != null)
         {
 
-            targetableObject.killPlayer();
+            targetableObject.killPlayerHelper();
         }
 
     }

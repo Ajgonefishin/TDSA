@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
     // sound effects
     public AudioClip dashSound;
     public AudioClip deathSound;
+    public AudioClip jumpSound;
 
     // Start is called before the first frame update
     void Start() {
@@ -94,6 +95,7 @@ public class PlayerController : MonoBehaviour {
 
         //JUMP
         if (Input.GetAxis("Vertical") > 0 && isGrounded()) {
+            audioSource.PlayOneShot(jumpSound);
             //if (Input.GetButtonDown("Vertical") && isGrounded()) {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             animator.SetFloat("yVelocity", rb.velocity.y);
@@ -123,7 +125,7 @@ public class PlayerController : MonoBehaviour {
 
         // check if died
         if (gameObject.transform.position.y < bottomDeathBox) {
-            killPlayer();
+            StartCoroutine(killPlayer());
         }
 
         // flip sprite if necessary
@@ -148,11 +150,28 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isJumping", !grounded);
     }
 
-    public void killPlayer() {
+    public void killPlayerHelper()
+    {
+        StartCoroutine(killPlayer());
+    }
+
+    public IEnumerator killPlayer() {
+        animator.SetBool("Death", true);
         audioSource.PlayOneShot(deathSound);
+        //float gravity = rb.gravityScale;
+        // rb.gravityScale = 0f;
+        if (gameObject.transform.position.y > bottomDeathBox)
+        {
+            yield return new WaitForSeconds(0.7f);
+            rb.velocity = new Vector2(0, 0);
+        }
+        animator.SetBool("Death", false);
+        //rb.gravityScale = gravity;
         rb.velocity = new Vector2();
         gameObject.transform.position = currentCheckpoint.transform.position;
     }
+
+
 
 
     // coroutine for dashing. based on https://www.youtube.com/watch?v=2kFGmuPHiA0 with changes

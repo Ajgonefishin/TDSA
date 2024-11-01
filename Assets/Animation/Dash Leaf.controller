@@ -37,7 +37,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 4263023624374610605}
-    m_Position: {x: 350, y: 260, z: 0}
+    m_Position: {x: 290, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5564180540757468147}
     m_Position: {x: 80, y: 230, z: 0}
@@ -46,7 +46,7 @@ AnimatorStateMachine:
     m_Position: {x: 115, y: 295, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9142582337412875001}
-    m_Position: {x: 270, y: 120, z: 0}
+    m_Position: {x: 340, y: 240, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -56,7 +56,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -9142582337412875001}
+  m_DefaultState: {fileID: 4263023624374610605}
 --- !u!1102 &-5030526736860028174
 AnimatorState:
   serializedVersion: 6
@@ -128,13 +128,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: mintOnFake
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
